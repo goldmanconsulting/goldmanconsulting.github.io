@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Beautiful Responsive Animated OnePage Template" />
+<meta name="keywords" content="Zerif, responsive, html, template, creative"/>
+<meta name="author" content="Mizanur Rahman" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldman Consulting</title>
+
+<!-- =========================
+ FAV AND TOUCH ICONS  
+============================== -->
+<link rel="shortcut icon" href="/images/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-touch-icon-114x114.png">
+
+<!-- =========================
+     STYLESHEETS      
+============================== -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/owl.theme.css">
+<link rel="stylesheet" href="/css/owl.carousel.css">
+<link rel="stylesheet" href="/css/jquery.vegas.min.css">
+<link rel="stylesheet" href="/css/animate.min.css">
+
+<link rel="stylesheet" href="/assets/icon-fonts/styles.css"> 
+<link rel="stylesheet" href="/css/pixeden-icons.css"> 
+
+<link rel="stylesheet" href="/css/prism.css" />
+
+<!-- CUSTOM STYLES -->
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/responsive.css">
+
+<!-- WEBFONT -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
+
+<!--[if lt IE 9]>
+	<script src="/js/html5shiv.js"></script>
+	<script src="/js/respond.min.js"></script>
+<![endif]-->
+
+<!-- JQUERY -->
+<script src="/js/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+<!-- =========================
+   PRE LOADER       
+============================== -->
+<div class="preloader">
+  <div class="status">&nbsp;</div>
+</div>
+
+
+<!-- =========================
+   HOME SECTION       
+============================== -->
+<header class="post-header">
+	
+	<div id="main-nav" class="navbar navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header responsive-logo">
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a href="/index.html" class="navbar-brand">
+					<img src="/images/logo.png" alt="Goldman Consulting">
+				</a>
+			</div>
+			<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+			<ul class="nav navbar-nav navbar-right responsive-nav main-nav-list">
+				<li><a href="/index.html#home" class="off-page-link">Home</a></li>
+				<li><a href="/index.html#focus" class="off-page-link">Focus</a></li>
+				<li><a href="/index.html#aboutus" class="off-page-link">About Us</a></li>
+				<li><a href="/index.html#features" class="off-page-link">What We Do</a></li>
+				<li class="current"><a href="/blog" class="off-page-link">Blog</a></lib>
+				<li><a href="/index.html#contact" class="off-page-link">Contact</a></li>
+			</ul>
+			</nav>
+		</div>
+	</div>
+	
+	<div class="container white-text">
+		<h1 class="intro">
+			Single Sign-on for WebSphere Applications Using Oracle OAM and SAML
+		</h1>
+		<h4 class="author">Written By: Grigori Goldman</h4>
+		<h5 class="text-transform-upper">January 16, 2012</h5>
+	</div>
+	
+</header>
+
+<article role="article" class="post">
+<div class="container">
+	<p>
+		Recently, I was asked to assist with an integration of an existing suite of JEE web applications with an Oracle single sign-on 
+		solution being rolled out across a large organisation.
+	</p>
+	<p>
+		The IBM WebSphere platform that was used for running existing web applications was somewhat outdated (WAS v6.1) and there was no 
+		possibility of an upgrade. To make things even more difficult, the applications in question used a home grown single sign-on 
+		solution with little documentation.
+	</p>
+	<p>	
+		The project brief was simple. Develop a proof of concept solution to demonstrate to management that their current assets can be 
+		migrated to the new single sign-on platform without major (or preferably any) changes to the above mentioned applications.
+	</p>
+	<p>	
+		Oracle’s OAM is a sophisticated, modern and complex offering. Among many things it supports and uses SAML to pass user identity 
+		and authorisation assertions to endpoint applications. WebSphere also supports SAML but only from version 7 and I was working with 
+		version 6, which of course doesn’t.
+	</p>
+	<p>	
+		IBM also has its own single sign-on solution that integrates well with WebSphere (naturally) - WebSEAL. WebSEAL is a reverse proxy 
+		which proxies all requests and responses to an application, which is not accessible any other way. User authentication and 
+		corse-grained access control is thus centralised at this point.
+	</p>	
+	<p>
+		When the HTTP request eventually gets to the WebSphere application server running the endpoint application, that request carries 
+		an encrypted lightweight third party authentication (LTPA) token which identifies the authenticated user. Since the token is 
+		encrypted, the WebSphere application server and WebSEAL must establish trust before hand so that WebSphere can decrypt contents of 
+		the LTPA token. This of course all happens in the background with the applications getting user identity and roles via the standard 
+		JEE mechanism (i.e. via HttpServletRequest interface).
+	</p>
+	<p>
+		So, given this environment our challenge was to integrate the incoming authentication/authorisation SAML token with WebSphere’s 
+		LTPA mechanism. Since the authentication of the user was happening externally to the WebSphere eco-system, the usual JAAS approach 
+		was inappropriate as it did not offer the single sign-on solution that was required. That is, we could not use the incoming SAML 
+		token in any way.
+	</p>
+	<p>
+		After a brief search on the Internet and having considered all our options we have settled on WebSphere’s Trust Association 
+		Interface (TAI) solution. TAI is not a well-known approach but in this case it was a perfect match for our requirements. Instead of 
+		re-authenticating the user (which is what JAAS could offer), TAI allows WebSphere to use existing user identity information 
+		obtained externally (in this case the SAML token obtained via OAM) to establish an authenticated session. Once the session is 
+		established, WebSphere can then track it via its standard LTPA mechanism.
+	</p>
+	<p>
+		I won’t dwell too much on the nitty-gritty details of how to implement and configure the TAI interceptor, as there is an excellent 
+		resource from IBM that deals with just that, see 
+		<a href="http://www.ibm.com/developerworks/websphere/techjournal/0508_benantar/0508_benantar.html">
+			http://www.ibm.com/developerworks/websphere/techjournal/0508_benantar/05…
+		</a>. 
+		Instead, the purpose of this blog is simply to document this approach as it applied to my specific situation, i.e. asserting user 
+		identity authenticated by Oracle’s OAM.
+	</p>
+	<p>
+		So, here is the use case I was working with. Before a user can access the WebSphere hosted application she is redirected to the 
+		Oracle’s single sign-on form (for now lets ignore how this redirect actually happens, we will deal with that later). The critical 
+		piece of information that is provided to the OAM with this redirect is the return URL back to the application (this is passed in 
+		via a request parameter).
+	</p>
+	<p>
+		The user authenticates herself via the OAM form and is then redirected back to the WebSphere application. This redirect request 
+		contains a HTTP attribute that contains an encrypted SAML token produced by OAM and which verifies the user’s identity and her 
+		privileges.
+	</p>
+	<p>
+		Before the redirected request reaches the application, the WebSphere server will intercept it and pass it to its authorisation 
+		mechanism, which we will extend using a custom TAI module. The negotiateValidateandEstablishTrust method does the magic of 
+		retrieving the SAML token, extracting user information and setting-up the WebSphere’s authenticated session using its TAIResult 
+		API.
+	</p>
+	<p>
+		e.g.
+		<pre data-src="tairesult-negotiate-validate-establish-trust.java" class="line-numbers"></pre>
+	</p>
+	<p>
+		One neat trick we ended up using in cases when the incoming request did not have a SAML token or it was invalid, was to reply with 
+		a browser redirect response (i.e. 303) to the OAM gateway.
+	</p>
+	<p>
+		e.g.
+		<pre data-src="tairesult-no-saml-token.java" class="line-numbers"></pre>
+	</p>
+	<p>
+		Obviously, there is lot more that could be said on the subject but hopefully this blog together with the IBM link provided can 
+		help you with integrating TAI-based single sign-on solutions into your legacy WebSphere applications (if not, drop us an email 
+		or comment below).
+	</p>
+</div>
+</article>
+
+<!-- SCRIPTS -->
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.scrollTo.min.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/jquery.nav.js"></script>
+<script src="/js/jquery.knob.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/smoothscroll.js"></script>
+<script src="/js/jquery.vegas.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="/js/gc.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Beautiful Responsive Animated OnePage Template" />
+<meta name="keywords" content="Zerif, responsive, html, template, creative"/>
+<meta name="author" content="Mizanur Rahman" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldman Consulting</title>
+
+<!-- =========================
+ FAV AND TOUCH ICONS  
+============================== -->
+<link rel="shortcut icon" href="/images/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-touch-icon-114x114.png">
+
+<!-- =========================
+     STYLESHEETS      
+============================== -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/owl.theme.css">
+<link rel="stylesheet" href="/css/owl.carousel.css">
+<link rel="stylesheet" href="/css/jquery.vegas.min.css">
+<link rel="stylesheet" href="/css/animate.min.css">
+
+<link rel="stylesheet" href="/assets/icon-fonts/styles.css"> 
+<link rel="stylesheet" href="/css/pixeden-icons.css"> 
+
+<link rel="stylesheet" href="/css/prism.css" />
+
+<!-- CUSTOM STYLES -->
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/responsive.css">
+
+<!-- WEBFONT -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
+
+<!--[if lt IE 9]>
+	<script src="/js/html5shiv.js"></script>
+	<script src="/js/respond.min.js"></script>
+<![endif]-->
+
+<!-- JQUERY -->
+<script src="/js/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+<!-- =========================
+   PRE LOADER       
+============================== -->
+<div class="preloader">
+  <div class="status">&nbsp;</div>
+</div>
+
+
+<!-- =========================
+   HOME SECTION       
+============================== -->
+<header class="post-header">
+	
+	<div id="main-nav" class="navbar navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header responsive-logo">
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a href="/index.html" class="navbar-brand">
+					<img src="/images/logo.png" alt="Goldman Consulting">
+				</a>
+			</div>
+			<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+			<ul class="nav navbar-nav navbar-right responsive-nav main-nav-list">
+				<li><a href="/index.html#home" class="off-page-link">Home</a></li>
+				<li><a href="/index.html#focus" class="off-page-link">Focus</a></li>
+				<li><a href="/index.html#aboutus" class="off-page-link">About Us</a></li>
+				<li><a href="/index.html#features" class="off-page-link">What We Do</a></li>
+				<li class="current"><a href="/blog" class="off-page-link">Blog</a></lib>
+				<li><a href="/index.html#contact" class="off-page-link">Contact</a></li>
+			</ul>
+			</nav>
+		</div>
+	</div>
+	
+	<div class="container white-text">
+		<h1 class="intro">
+			Spring Remoting for Web and Business Tier Separation
+		</h1>
+		<h4 class="author">Written By: Grigori Goldman</h4>
+		<h5 class="text-transform-upper">June 5, 2011</h5>
+	</div>
+	
+</header>
+
+<article role="article" class="post">
+<div class="container">
+	<p>
+		I remember when I first started using EJBs, there was a lot of talk about physical separation of the presentation and business 
+		tiers via remote interfaces and RMI. So, technically you could have your business logic sitting on a different server than you web 
+		application. It sounds great but I cannot remember actually doing that.
+	</p>
+	<p>
+		My web and business tiers have always been packaged into a single EAR and deployed as a one, monolithic application. When I moved 
+		away from EJBs and started using the Struts/Spring/Hibernate combination I didn’t give much thought about this until recently when 
+		on my latest project someone (thanks Shine) reminded me how you can achieve the same separation of tiers using Spring remoting. 
+		After all, this is still a great enterprise design pattern and I’m surprised I haven’t encountered it more often. Allow me to 
+		share it…
+	</p>
+	<p>	
+		OK, to start with we need to break our application into three components: 1). the web app, 2). the back-end app, and 3). the 
+		common library that will define the interfaces that the web app can use to talk to the back-end and the DTOs that they will use 
+		to exchange data. This library will be listed as a dependency in each app.
+	</p>
+	<h3>Common Library</h3>
+	<p>	
+		This library defines the interfaces and classes that will be shared between the business and the web applications (but not the 
+		communication interfaces as Spring remoting will handle that for us). So for example:
+		<pre data-src="example1.java" class="line-numbers"></pre>
+	</p>
+	<p>	
+		I think both the <code>ServiceResultDto</code> and the <code>IService</code> definitions are self explanatory. Basically, we are 
+		expecting our business tier to provide the implementation of the <code>IService</code> interface, which, when invoked will return 
+		an instance of the <code>ServiceResultDto</code> class containing results data. At this stage we are not interested in how this 
+		service will be exposed to a remote web application. We will leave that to the business app and Spring.
+	</p>
+	<h3>Business (back-end) Application</h3>	
+	<p>
+		Funny enough the actual implementation of the <code>IService</code> interface is not important. What is important is how we wire 
+		it together with Spring remoting so that it is accessible from the Web application (which, remember is deployed on a separate 
+		application server, potentially on a different machine).
+	</p>
+	<p>
+		Here is a simple implementation of this service interface. Note the <code>@Service</code> annotation which tells Spring that 
+		this class is our service.
+		<pre data-src="Service.java" class="line-numbers"></pre>
+	</p>
+	<p>
+		Since our business tier needs to run independently of the front-end web application, let’s make the back-end a web app in its own 
+		right as well. To do this, it needs to be packaged as a WAR file and have a web.xml configuration. Here is a web.xml extract that 
+		contains the DispatcherServlet definition that will do the work of dispatching incoming requests to our service instance.
+		<pre data-src="web.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		Pay attention to the servlet name as it is important. Spring framework will look for the application context configuration 
+		file whose name starts with the servlet name and appended with “-context.xml” (we’ll define this configuration file next).
+	</p>
+	<p>
+		The following is a complete definition of the services-context.xml Spring application context configuartion file.
+		<pre data-src="services-context.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		The <code>&lt;context:component-scan&gt;</code> tells Spring to find bean definitions by scanning the source code, loading the 
+		<code>@Service</code> annotated classes into its application context.
+	</p>
+	<p>
+		The <code>/service</code> bean definition, is the one that exposes our service to the outside world using Spring Remoting, 
+		specifically, its <code>HttpInvokerServiceExporter</code> class. In essence it wraps the real service implementation within 
+		this bean exposing it using its interface.
+	</p>
+	<p>
+		Package (as a WAR file) and deploy the back-end application to your favourite application server (I normally just use Tomcat) 
+		and it is ready for use by the front-end web application.
+	</p>
+	<h3>Web Application</h3>
+	<p>
+		Do whatever you normally do to create your web application (with Spring support of course). The key is it should be no different 
+		to any other web application that you’ve developed in the past, with one small difference.
+	</p>
+	<p>
+		At some point you will want to access the remote service that we’ve defined and deployed in the previous step. Assuming that 
+		you’ve imported the common library JAR file, you will need to define the following application context (either in a separate file
+		or within an existing configuration file if you are using Spring for other purposes).
+		<pre data-src="application-context.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		We are using the Spring Remoting API, specifically, the <code>HttpInvokerProxyFactoryBean</code> class to help us interface with 
+		a remote service. The serviceUrl attribute defines the remote service location to which the invoker will forward HTTP requests 
+		and whose responses will be marshalled into the appropriate Java objects (in our case <code>ServiceResultDto</code>).
+	</p>
+	<p>
+		When Spring creates the above bean it will use the serviceInterface value to ensure that the created instance implements the 
+		IService inteface. This means that when it is injected into your web action classes, the fact that the calls are made to a remote 
+		service is completely abstracted. Remoting is handled for you so you are left with worrying about implementing your business logic. 
+		Nice.
+	</p>
+	<h3>Conclusion</h3>
+	<p>
+		I doubt that I’m telling you anything that new. This technology has existed for a while now but perhaps, just like me, you haven’t 
+		properly thought about using it for separating the web and business tiers. I think this is a great way of implementing a reusable 
+		back-end subsystem and I ’m sure I’ll find lots of uses for it in the future.
+	</p>
+</div>
+</article>
+
+<!-- SCRIPTS -->
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.scrollTo.min.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/jquery.nav.js"></script>
+<script src="/js/jquery.knob.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/smoothscroll.js"></script>
+<script src="/js/jquery.vegas.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="/js/gc.js"></script>
+
+</body>
+</html>

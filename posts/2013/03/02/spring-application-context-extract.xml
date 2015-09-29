@@ -1,0 +1,7 @@
+<security:authentication-provider ref="activeDirectoryAuthProvider"/>
+<bean id="activeDirectoryAuthProvider"
+  class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+    <constructor-arg value="${ldap.domain}" />
+    <constructor-arg value="${ldap.url}" />
+    ...
+</bean>

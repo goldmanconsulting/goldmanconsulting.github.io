@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Beautiful Responsive Animated OnePage Template" />
+<meta name="keywords" content="Zerif, responsive, html, template, creative"/>
+<meta name="author" content="Mizanur Rahman" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldman Consulting</title>
+
+<!-- =========================
+ FAV AND TOUCH ICONS  
+============================== -->
+<link rel="shortcut icon" href="/images/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-touch-icon-114x114.png">
+
+<!-- =========================
+     STYLESHEETS      
+============================== -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/owl.theme.css">
+<link rel="stylesheet" href="/css/owl.carousel.css">
+<link rel="stylesheet" href="/css/jquery.vegas.min.css">
+<link rel="stylesheet" href="/css/animate.min.css">
+
+<link rel="stylesheet" href="/assets/icon-fonts/styles.css"> 
+<link rel="stylesheet" href="/css/pixeden-icons.css"> 
+
+<link rel="stylesheet" href="/css/prism.css" />
+
+<!-- CUSTOM STYLES -->
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/responsive.css">
+
+<!-- WEBFONT -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
+
+<!--[if lt IE 9]>
+	<script src="/js/html5shiv.js"></script>
+	<script src="/js/respond.min.js"></script>
+<![endif]-->
+
+<!-- JQUERY -->
+<script src="/js/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+<!-- =========================
+   PRE LOADER       
+============================== -->
+<div class="preloader">
+  <div class="status">&nbsp;</div>
+</div>
+
+
+<!-- =========================
+   HOME SECTION       
+============================== -->
+<header class="post-header">
+	
+	<div id="main-nav" class="navbar navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header responsive-logo">
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a href="/index.html" class="navbar-brand">
+					<img src="/images/logo.png" alt="Goldman Consulting">
+				</a>
+			</div>
+			<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+			<ul class="nav navbar-nav navbar-right responsive-nav main-nav-list">
+				<li><a href="/index.html#home" class="off-page-link">Home</a></li>
+				<li><a href="/index.html#focus" class="off-page-link">Focus</a></li>
+				<li><a href="/index.html#aboutus" class="off-page-link">About Us</a></li>
+				<li><a href="/index.html#features" class="off-page-link">What We Do</a></li>
+				<li class="current"><a href="/blog" class="off-page-link">Blog</a></lib>
+				<li><a href="/index.html#contact" class="off-page-link">Contact</a></li>
+			</ul>
+			</nav>
+		</div>
+	</div>
+	
+	<div class="container white-text">
+		<h1 class="intro">
+			Configuring Spring Security for Authentication Using Microsoft's Active Directory
+		</h1>
+		<h4 class="author">Written By: Grigori Goldman</h4>
+		<h5 class="text-transform-upper">February 2, 2013</h5>
+	</div>
+	
+</header>
+
+<article role="article" class="post">
+<div class="container">
+	<p>
+		I was recently working on a project that required us to integrate our Spring MVC application with Microsoft’s Active Directory (AD).
+	</p>
+	<p>
+		Most online tutorials discuss using a privileged system account for perfoming lookups of the user’s distinguished name (DN) based 
+		on the provided at login user name. Setting up a generic system account to enable authentication from our application became 
+		problametic due to organisational policies.
+	</p>
+	<p>	
+		Normally, it is possible for users to bind to LDAP without the additional system account provided:
+		<ol>
+			<li>Anonymous searches are allowed, or</li>
+			<li>All users are given permissions to search the directory</li>
+		</ol>
+	</p>
+	<p>	
+		… and the normal way of getting this set-up to work using Spring Security is to use the LdapAuthenticationProvider.
+	</p>
+	<p>	
+		Unfortunately, AD works differently and “supports its own non-standard authentication options”. This makes the use of the standard
+		LDAP authentication provider difficult without extending its functions (an approach that we briefly entertained but wisely 
+		reconsidered).
+	</p>
+	<p>	
+		While looking for alternatives, we’ve stumbled upon the ActiveDirectoryLdapAuthenticationProvider class (available as of version 
+		3.1). As the name suggests, this class implements the authentication options specific to the Active Directory implementation. 
+		Using this provider made authenticating to AD from our Spring MVC application trivial.
+	</p>
+	<p>
+		So, what’s the difference? As we already established, normally LDAP authentication is performed using the user’s DN (e.g. 
+		<code>CN=grigori,O=Goldman Consulting Pty Ltd,L=Melbourne,ST=VIC,C=AU</code>). In the case of AD, however, the domain user name 
+		is used instead (e.g. user@goldmanconsulting.com.au). The authentication is performed against the userPrincipalName attribute and 
+		depending on configuration, the domain suffix can be omitted making things even simpler for users. Most importantly, no additional 
+		permissions need to be granted to users.
+	</p>
+	<p>
+		I won’t dwell too much on how to wire Spring Security into your application, there are plenty of great tutorials and blogs that 
+		discuss this topic. Instead, what is presented here is an example of configuring the AD authentication provider. The first 
+		constructor argument, the domain, is optional but unless provided, it would require all users to enter their entire domain user 
+		name including the @ suffix. Unless you use AD for cross-domain authentication, it is best to set this option.
+		<pre data-src="spring-application-context-extract.xml" class="line-numbers"></pre>
+	</p>
+</div>
+</article>
+
+<!-- SCRIPTS -->
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.scrollTo.min.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/jquery.nav.js"></script>
+<script src="/js/jquery.knob.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/smoothscroll.js"></script>
+<script src="/js/jquery.vegas.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="/js/gc.js"></script>
+
+</body>
+</html>

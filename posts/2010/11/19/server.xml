@@ -1,0 +1,14 @@
+<Realm className="org.apache.catalina.realm.CombinedRealm">
+  <Realm resourceName="UserDatabase"
+      className="org.apache.catalina.realm.UserDatabaseRealm"/>
+  <Realm appName="Crowd"
+      className="org.apache.catalina.realm.JAASRealm"
+      userClassNames="com.atlassian.crowd.application.jaas.CrowdPrincipal"
+      roleClassNames="com.atlassian.crowd.application.jaas.CrowdPrincipal"/>
+</Realm>
+
+<Host name="localhost"  appBase="webapps" unpackWARs="true"
+  autoDeploy="true" xmlValidation="false"
+  xmlNamespaceAware="false">
+      <Valve className="org.apache.catalina.authenticator.SingleSignOn"/>
+</Host>

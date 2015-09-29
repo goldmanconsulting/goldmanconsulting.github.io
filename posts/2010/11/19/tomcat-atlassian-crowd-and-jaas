@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Beautiful Responsive Animated OnePage Template" />
+<meta name="keywords" content="Zerif, responsive, html, template, creative"/>
+<meta name="author" content="Mizanur Rahman" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldman Consulting</title>
+
+<!-- =========================
+ FAV AND TOUCH ICONS  
+============================== -->
+<link rel="shortcut icon" href="/images/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-touch-icon-114x114.png">
+
+<!-- =========================
+     STYLESHEETS      
+============================== -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/owl.theme.css">
+<link rel="stylesheet" href="/css/owl.carousel.css">
+<link rel="stylesheet" href="/css/jquery.vegas.min.css">
+<link rel="stylesheet" href="/css/animate.min.css">
+
+<link rel="stylesheet" href="/assets/icon-fonts/styles.css"> 
+<link rel="stylesheet" href="/css/pixeden-icons.css"> 
+
+<link rel="stylesheet" href="/css/prism.css" />
+
+<!-- CUSTOM STYLES -->
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/responsive.css">
+
+<!-- WEBFONT -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
+
+<!--[if lt IE 9]>
+	<script src="/js/html5shiv.js"></script>
+	<script src="/js/respond.min.js"></script>
+<![endif]-->
+
+<!-- JQUERY -->
+<script src="/js/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+<!-- =========================
+   PRE LOADER       
+============================== -->
+<div class="preloader">
+  <div class="status">&nbsp;</div>
+</div>
+
+
+<!-- =========================
+   HOME SECTION       
+============================== -->
+<header class="post-header">
+	
+	<div id="main-nav" class="navbar navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header responsive-logo">
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a href="/index.html" class="navbar-brand">
+					<img src="/images/logo.png" alt="Goldman Consulting">
+				</a>
+			</div>
+			<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+			<ul class="nav navbar-nav navbar-right responsive-nav main-nav-list">
+				<li><a href="/index.html#home" class="off-page-link">Home</a></li>
+				<li><a href="/index.html#focus" class="off-page-link">Focus</a></li>
+				<li><a href="/index.html#aboutus" class="off-page-link">About Us</a></li>
+				<li><a href="/index.html#features" class="off-page-link">What We Do</a></li>
+				<li class="current"><a href="/blog" class="off-page-link">Blog</a></lib>
+				<li><a href="/index.html#contact" class="off-page-link">Contact</a></li>
+			</ul>
+			</nav>
+		</div>
+	</div>
+	
+	<div class="container white-text">
+		<h1 class="intro">
+			Tomcat, Atlassian Crowd and JAAS
+		</h1>
+		<h4 class="author">Written By: Grigori Goldman</h4>
+		<h5 class="text-transform-upper">September 19, 2010</h5>
+	</div>
+	
+</header>
+
+<article role="article" class="post">
+<div class="container">
+	<p>
+		I have recently rolled out a single sign-on solution using Atlassian Crowd. My client’s applications were running on Apache Tomcat 
+		and required FORM based authentication. After briefly Googling around, I have found the Crowd JAAS Login Module 
+		(see <a href="https://plugins.atlassian.com/plugin/details/6045">https://plugins.atlassian.com/plugin/details...</a>) which 
+		fitted my requirements perflectly.
+	</p>
+	<p>
+		Here is an example of how to integrate a Crowd JAAS login module into Tomcat so that all web applications can be authenticated 
+		against the Crowd server.
+	</p>
+	<p>	
+		The following instructions were tested against Crowd 2.0 and Tomcat 6.0.29. You will need at least Tomcat 6.0.20 to make some of 
+		the instructions that follow work.
+	</p>
+	<p>
+		First step is to prepare the Tomcat server to authenticate users against Crowd. To ensure that you can still log into the Tomcat 
+		manager application, wrap the UserDatabase realm in a CombinedRealm element (note the CombinedRealm class is only available in 
+		Tomcat 6.0.20 and above). Add the Crowd realm definition inside the CombinedRealm as well.
+	</p>
+	<p>
+		Note: You don’t have to do this if you intend to add your Tomcat administrator user and roles to Crowd. If you do, then you can 
+		repalce the UserDatabase realm with your Crowd realm.
+	</p>
+	<p>
+		If you need single sign-on, make sure to uncomment the SingleSignOn valve inside the Host element.
+		<pre data-src="server.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		 I don’t like to mix Tomcat core libraries with third party libraries. So, instead of adding the Crowd login module library 
+		 (and its dependencies) to the Tomcat’s lib directory, create a new directory, lib-crowd and add a reference to it in the 
+		 catalina.properties file. For example:
+		 <pre data-src="catalina.properties" class="line-numbers"></pre>
+	</p>
+	<p>
+		Which dependencies do you need? Truthfully, I haven’t properly worked that out yet. Besides the CrowdJaasLoginModule-{version}.jar 
+		and crowd-integration-client-{version}.jar, I basically added all the jars that I found in the Crowd client/lib directory.
+	</p>
+	<p>
+		Finally, we need to configure the Crowd JAAS module. Add a crowd.conf file to Tomcat’s conf directory. Here is a basic JAAS module 
+		configuration to get you started (see the Crowd JAAS Login Module wiki for a full list of all the options that you can use).
+		<pre data-src="crowd.conf" class="line-numbers"></pre>
+	</p>
+	<p>
+		Edit: As was pointed out in the comment below, the Tomcat JVM must be told which JAAS login configuration file should be used. The 
+		best way is to add the following entry to the CATALINA_OPTS environment variable that is usually initialised in the 
+		<code>startup.[sh|bat]</code> or <code>setenv.[sh|bat]</code> scripts: 
+		<code>-Djava.security.auth.login.config=$CATALINA_HOME/conf/crowd.conf</code>
+	</p>
+	<p>
+		And that’s it. Well, not quite. I did have some issues with getting Tomcat to recognise the user roles that were added to the 
+		Subject by the JAAS module. I posted a solution to this problem to this forum: 
+		<a href="http://forums.atlassian.com/thread.jspa?messageID=257358007">
+			http://forums.atlassian.com/thread.jspa?messageID=257358007
+		</a>.
+	</p>
+</div>
+</article>
+
+<!-- SCRIPTS -->
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.scrollTo.min.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/jquery.nav.js"></script>
+<script src="/js/jquery.knob.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/smoothscroll.js"></script>
+<script src="/js/jquery.vegas.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="/js/gc.js"></script>
+
+</body>
+</html>

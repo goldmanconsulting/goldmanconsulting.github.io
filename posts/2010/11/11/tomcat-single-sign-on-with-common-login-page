@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Beautiful Responsive Animated OnePage Template" />
+<meta name="keywords" content="Zerif, responsive, html, template, creative"/>
+<meta name="author" content="Mizanur Rahman" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldman Consulting</title>
+
+<!-- =========================
+ FAV AND TOUCH ICONS  
+============================== -->
+<link rel="shortcut icon" href="/images/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-touch-icon-114x114.png">
+
+<!-- =========================
+     STYLESHEETS      
+============================== -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/owl.theme.css">
+<link rel="stylesheet" href="/css/owl.carousel.css">
+<link rel="stylesheet" href="/css/jquery.vegas.min.css">
+<link rel="stylesheet" href="/css/animate.min.css">
+
+<link rel="stylesheet" href="/assets/icon-fonts/styles.css"> 
+<link rel="stylesheet" href="/css/pixeden-icons.css"> 
+
+<link rel="stylesheet" href="/css/prism.css" />
+
+<!-- CUSTOM STYLES -->
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/responsive.css">
+
+<!-- WEBFONT -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
+
+<!--[if lt IE 9]>
+	<script src="/js/html5shiv.js"></script>
+	<script src="/js/respond.min.js"></script>
+<![endif]-->
+
+<!-- JQUERY -->
+<script src="/js/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+<!-- =========================
+   PRE LOADER       
+============================== -->
+<div class="preloader">
+  <div class="status">&nbsp;</div>
+</div>
+
+
+<!-- =========================
+   HOME SECTION       
+============================== -->
+<header class="post-header">
+	
+	<div id="main-nav" class="navbar navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header responsive-logo">
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a href="/index.html" class="navbar-brand">
+					<img src="/images/logo.png" alt="Goldman Consulting">
+				</a>
+			</div>
+			<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+			<ul class="nav navbar-nav navbar-right responsive-nav main-nav-list">
+				<li><a href="/index.html#home" class="off-page-link">Home</a></li>
+				<li><a href="/index.html#focus" class="off-page-link">Focus</a></li>
+				<li><a href="/index.html#aboutus" class="off-page-link">About Us</a></li>
+				<li><a href="/index.html#features" class="off-page-link">What We Do</a></li>
+				<li class="current"><a href="/blog" class="off-page-link">Blog</a></lib>
+				<li><a href="/index.html#contact" class="off-page-link">Contact</a></li>
+			</ul>
+			</nav>
+		</div>
+	</div>
+	
+	<div class="container white-text">
+		<h1 class="intro">
+			Tomcat Single Sign-on With Common Login Page
+		</h1>
+		<h4 class="author">Written By: Grigori Goldman</h4>
+		<h5 class="text-transform-upper">September 11, 2010</h5>
+	</div>
+	
+</header>
+
+<article role="article" class="post">
+<div class="container">
+	<p>
+		Recently, while rolling out a single sign-on solution for a client, I have stumbled across an interesting problem.
+	</p>
+	<p>
+		Here’s the situation. We had a bunch of web applications that needed to be deployed onto Apache Tomcat (v6.0.29) server. Each 
+		application needed to be secured using FORM based authentication. We were using Atlassian Crowd identity management application 
+		for managing our users and providing the authentication and authorisation services.
+	</p>
+	<p>	
+		The integration of the Tomcat server with Crowd was straight forward. Using Tomcat’s JAASRealm implementation and Crowd’s third 
+		party CrowdLoginModule JAAS module, we managed to successfully get our users authenticated using BASIC authentication method.
+	</p>
+	<p>	
+		Enabling single sign-on from within Tomcat was also very easy. We used Tomcat’s SingleSignOn valve, which uses JSESSIONIDSSO 
+		cookie to keep track of the user session across multiple applications.
+	</p>
+	<p>
+		Once we got everything working using BASIC authentication, we decided to change to FORM based authentication using our corporate 
+		login page. This should have been easy but turned out to be tricky.
+	</p>
+	<p>
+		As you undoubtedly aware, this is how you would normally configure a web application’s login page inside the web.xml file:
+		<pre data-src="web.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		Unfortunately, the login page you declare in this section always represents an application context relative path (as per the J2EE 
+		servlet specification). So, for example, if you access your application using this URL: <code>http://host:port/myapp</code>, then
+		the container will look for the login page declared above, here: <code>http://host:port/myapp/login.jsp</code>
+	</p>
+	<p>
+		What this really boils down to is if you have multiple applications that all require user login, each one has to package its own 
+		copy of the login page inside the web archive. Clearly, this solution is less than ideal. The login page should really be deployed 
+		as a separate resource somewhere in the common location and accessed by all applications that need it. Any changes that may be 
+		required to it, can then be done in one place and automatically propagated to all applications that use it as soon as the login 
+		page is redeployed.
+	</p>
+	<p>
+		Declaring absolute paths within the form-login-page element is not possible, so how do we get around this problem? The way that I 
+		solved this problem is as follows.
+	</p>
+	<h3>Login Form Servlet</h3>
+	<p>
+		I am sure by now you have realised that to load a login form from outside of the application context, we need to use either a 
+		Filter or a Servlet. For the purpose of this example, I will use a servlet.
+	</p>
+	<p>
+		The login form servlet is responsibly for returning a login form located in a common location on your server. Here’s how this 
+		servlet can be implemented:
+		<pre data-src="LoginFormServlet.java" class="line-numbers"></pre>
+	</p>
+	<p>
+		Now, we need to wire this servlet into the web.xml so that login form requests go to it. Here’s how to do it:
+		<pre data-src="web-with-login.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		Now, whenever the container needs to authenticate a user, it will redirect the request to <code>/sso/login</code> which will invoke
+		the LoginFormServlet that will subsequently load the <code>file:///path/to/login.html</code> file and stream it to the user’s 
+		browser. Provided that the HTML contains <code>&lt;form action="j_security_check"&gt;</code> instruction, the user name and 
+		password values will be sent to Tomcat’s authentication provider and the user will be properly authenticated with the right 
+		JSESSIONID cookie created.
+	</p>
+	<h3>Single Sign-On</h3>
+	<p>
+		The above solution works but each application deployed to Tomcat is still required to define the servlet, its mapping and of 
+		course the login config inside the web.xml file. This is not a problem but I did wonder if there was a better way. And sure 
+		enough there is.
+	</p>
+	<p>
+		Tomcat’s conf directory contains various configuration files that dictate the behaviour of the server and each application that it 
+		is executing. One of the configuration files is web.xml deployment descriptor. When a web application is deployed onto Tomcat, 
+		this file is processed first followed by the WEB-INF/web.xml file defined inside the application’s war file. It is the combination 
+		of instructions found in both files that constitute the operational context of each application.
+	</p>
+	<p>
+		Hence, to centralise the authentication of users for all applications within a single instance of a Tomcat server, all I had to do 
+		was to move the definition of the servlet, the servlet mapping and the login config into the Tomcat’s global web.xml file.
+	</p>
+	<p>
+		I took this a step further and defined the security contraints within the global web.xml as well to ensure that even if the 
+		application’s developers did not include any constraints, the access to the application will continue to be enforced using the 
+		global definition. Here it is:
+		<pre data-src="web-with-constraints.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		Of course as soon as I did this, I realised that some of our HTTP accessible back-end applications (e.g. web services, Spring 
+		HTTP invoker proxies, etc) that do not require authentication may break and sure enough they did.
+	</p>
+	<p>
+		To fix this problem, I took advantage of the way Tomcat loads and treats the global and application local web.xml files. By adding 
+		a security constraint to the application’s web.xml file, I could effectively override the “all” constraint defined in the global 
+		web.xml file, thus allowing unauthenticated access to these applications (I did briefly consider moving these applications to 
+		another Tomcat server which does not require authentication of all its applications but in the end I decided that it was not worth 
+		the hassle).
+	</p>
+	<p>
+		For example, here is an application local constraint that allows unauthenticated access to <code>/services</code>. This constraint, 
+		which is defined inside the application’s WEB-INF/web.xml file effectively overrides the above catch-all declaration.
+		<pre data-src="web-with-constraints-all.xml" class="line-numbers"></pre>
+	</p>
+	<p>
+		And that’s it. Using this approach I managed to successfully implement a single sign-on solution for all of my client’s 
+		applications without having to duplicate the login form code in each web archive.
+	</p>
+</div>
+</article>
+
+<!-- SCRIPTS -->
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.scrollTo.min.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/jquery.nav.js"></script>
+<script src="/js/jquery.knob.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/smoothscroll.js"></script>
+<script src="/js/jquery.vegas.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="/js/gc.js"></script>
+
+</body>
+</html>
