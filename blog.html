@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Beautiful Responsive Animated OnePage Template" />
+<meta name="keywords" content="Zerif, responsive, html, template, creative"/>
+<meta name="author" content="Mizanur Rahman" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldman Consulting</title>
+
+<!-- =========================
+ FAV AND TOUCH ICONS  
+============================== -->
+<link rel="shortcut icon" href="images/icons/favicon.ico">
+<link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="images/icons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="images/icons/apple-touch-icon-114x114.png">
+
+<!-- =========================
+     STYLESHEETS      
+============================== -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/owl.theme.css">
+<link rel="stylesheet" href="css/owl.carousel.css">
+<link rel="stylesheet" href="css/jquery.vegas.min.css">
+<link rel="stylesheet" href="css/animate.min.css">
+
+<link rel="stylesheet" href="assets/icon-fonts/styles.css"> 
+<link rel="stylesheet" href="css/pixeden-icons.css"> 
+
+<!-- CUSTOM STYLES -->
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+<!-- WEBFONT -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
+
+<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+<![endif]-->
+
+<!-- JQUERY -->
+<script src="js/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+<!-- =========================
+   PRE LOADER       
+============================== -->
+<div class="preloader">
+  <div class="status">&nbsp;</div>
+</div>
+
+<!-- =========================
+   HOME SECTION       
+============================== -->
+<header id="home" class="header">
+	
+	<div id="main-nav" class="navbar navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header responsive-logo">
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a href="index.html" class="navbar-brand">
+				<img src="images/logo.png" alt="Goldman Consulting">
+				</a>
+			</div>
+			<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+			<ul class="nav navbar-nav navbar-right responsive-nav main-nav-list">
+				<li><a href="index.html#home" class="off-page-link">Home</a></li>
+				<li><a href="index.html#focus" class="off-page-link">Focus</a></li>
+				<li><a href="index.html#aboutus" class="off-page-link">About Us</a></li>
+				<li><a href="index.html#features" class="off-page-link">What We Do</a></li>
+				<li class="current"><a href="blog.html">Blog</a></lib>
+				<li><a href="index.html#contact" class="off-page-link">Contact</a></li>
+			</ul>
+			</nav>
+		</div>
+	</div>
+
+	<div class="container white-text">
+		<h1 class="intro">Welcome to our blog</h1>
+		<h4>Home of high performance software engineering</h4>
+	</div>
+</header>
+
+<!-- =========================
+   FOCUS SECTION      
+============================== -->
+
+<section class="focus posts" id="focus">
+<div class="container">
+
+	<div class="row">
+
+		<div class="col-lg-12 col-sm-12 focus-box red">
+			<h5 class="red-border-bottom">
+				PKCS#12 Issues Between IBM and Oracle JREs
+			</h5>
+			<p>
+				We had an issue recently with our PKCS#12 keystore that had us stumped for days. When trying to access a SOAP web service
+				over HTTPS (mutual authentication) from a stand-alone application we started getting "Unexpected error: java.security.
+				InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty". I normally use KeyStore Explorer (KSE)
+				tool when working with stores and certificates. In this case KSE was able to both open the keystore and list the private
+				key and certificates stored within (note: as this store was used for testing it was used as a truststore as well as the
+				keystore).
+				<a href="/posts/2013/05/03/pkcs-number-12-issues-between-ibm-and-oracle-jres">Read more →</a>
+			</p>
+		</div>
+
+		<div class="col-lg-12 col-sm-12 focus-box red">
+			<h5 class="red-border-bottom">
+				Configuring Spring Security for Authentication Using Microsoft’s Active Directory
+			</h5>
+			<p>
+				I was recently working on a project that required us to integrate our Spring MVC application with Microsoft’s Active
+				Directory (AD). Most online tutorials discuss using a privileged system account for perfoming lookups of the user’s
+				distinguished name (DN) based on the provided at login user name. Setting up a generic system account to enable
+				authentication from our application became problametic due to organisational policies. 
+				<a href="/posts/2013/03/02/configuring-spring-security-for-authentication-using-microsofts-active-directory">Read more →</a>
+			</p>
+		</div>
+
+		<div class="col-lg-12 col-sm-12 focus-box red">
+			<h5 class="red-border-bottom">
+				Single Sign-on for WebSphere Applications Using Oracle OAM and SAML
+			</h5>
+			<p>
+				Recently, I was asked to assist with an integration of an existing suite of JEE web applications with an Oracle single 
+				sign-on solution being rolled out across a large organisation. The IBM WebSphere platform that was used for running
+				existing web applications was somewhat outdated (WAS v6.1) and there was no possibility of an upgrade. To make things even
+				more difficult, the applications in question used a home grown single sign-on solution with little documentation. The
+				project brief was simple. Develop a proof of concept solution to demonstrate to management that their current assets can be
+				migrated to the new single sign-on platform without major (or preferably any) changes to the above mentioned applications.
+				<a href="/posts/2012/01/16/single-sign-on-for-websphere-applications-using-oracle-oam-and-saml">Read more →</a>
+			</p>
+		</div>
+
+		<div class="col-lg-12 col-sm-12 focus-box red">
+			<h5 class="red-border-bottom">
+				Spring Remoting for Web and Business Tier Separation
+			</h5>
+			<p>
+				I remember when I first started using EJBs, there was a lot of talk about physical separation of the presentation and
+				business tiers via remote interfaces and RMI. So, technically you could have your business logic sitting on a different
+				server than you web application. It sounds great but I cannot remember actually doing that. My web and business tiers have
+				always been packaged into a single EAR and deployed as a one, monolithic application. When I moved away from EJBs and 
+				started using the Struts/Spring/Hibernate combination I didn’t give much thought about this until recently when on my 
+				latest project someone (thanks Shine) reminded me how you can achieve the same separation of tiers using Spring remoting.
+				After all, this is still a great enterprise design pattern and I’m surprised I haven’t encountered it more often. Allow me
+				to share it.
+				<a href="/posts/2011/06/05/spring-remoting-for-web-and-business-tier-separation">Read more →</a>
+			</p>
+		</div>
+
+		<div class="col-lg-12 col-sm-12 focus-box red">
+			<h5 class="red-border-bottom">
+				Tomcat, Atlassian Crowd and JAAS
+			</h5>
+			<p>
+				I have recently rolled out a single sign-on solution using Atlassian Crowd. My client’s applications were running on Apache
+				Tomcat and required FORM based authentication. After briefly Googling around, I have found the Crowd JAAS Login Module which
+				fitted my requirements perflectly. Here is an example of how to integrate a Crowd JAAS login module into Tomcat so that all
+				web applications can be authenticated against the Crowd server. The following instructions were tested against Crowd 2.0
+				and Tomcat 6.0.29. You will need at least Tomcat 6.0.20 to make some of the instructions that follow work.
+				<a href="/posts/2010/11/19/tomcat-atlassian-crowd-and-jaas">Read more →</a>
+			</p>
+		</div>
+
+		<div class="col-lg-12 col-sm-12 focus-box red">
+			<h5 class="red-border-bottom">
+				Tomcat Single Sign-on With Common Login Page
+			</h5>
+			<p>
+				Recently, while rolling out a single sign-on solution for a client, I have stumbled across an interesting problem. Here’s
+				the situation. We had a bunch of web applications that needed to be deployed onto Apache Tomcat (v6.0.29) server. Each
+				application needed to be secured using FORM based authentication. We were using Atlassian Crowd identity management
+				application for managing our users and providing the authentication and authorisation services. The integration of the
+				Tomcat server with Crowd was straight forward. Using Tomcat’s JAASRealm implementation and Crowd’s third party
+				CrowdLoginModule JAAS module, we managed to successfully get our users authenticated using BASIC authentication method.
+				<a href="/posts/2010/11/11/tomcat-single-sign-on-with-common-login-page">Read more →</a>
+			</p>
+		</div>
+
+	</div>
+
+</div> <!-- / END CONTAINER -->
+</section>  <!-- / END FOCUS SECTION -->
+
+<!-- SCRIPTS -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.scrollTo.min.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="js/jquery.nav.js"></script>
+<script src="js/jquery.knob.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/smoothscroll.js"></script>
+<script src="js/jquery.vegas.min.js"></script>
+<script src="js/bg-blog-slideshow.js"></script>
+<script src="js/gc.js"></script>
+
+</body>
+</html>
