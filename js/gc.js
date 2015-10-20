@@ -191,3 +191,20 @@ $(".skill2").knob({
 
 new WOW().init();
 
+/* =================================
+ ===  SEND EMAIL                ====
+ =================================== */
+
+$(document).ready(function() {
+
+  var blacklist = ["goo.g.l.e.e.m.ail.21@gmail.com"];
+
+  $(".contact-form").submit(function(event) {
+    var email = $("input[name='email']").val();
+    var isBlacklistedEmail = $.inArray(email, blacklist) >= 0;
+    if (isBlacklistedEmail) {
+      event.preventDefault();
+      window.location.replace("/thanks.html");
+    }
+  })
+});
