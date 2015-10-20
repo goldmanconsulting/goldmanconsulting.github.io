@@ -955,6 +955,9 @@ pre {
 
 pre[class*="language-"] {
 	max-height: none;
+	overflow: auto;
+	word-wrap: normal;
+	white-space: pre;
 }
 
 p code, li code {
