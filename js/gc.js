@@ -197,12 +197,24 @@ new WOW().init();
 
 $(document).ready(function() {
 
+  var blacklist = ["googleemail"];
+  function isInBlackList(email) {
+
+    var simplifiedEmail = email.replace(/\./g, '')
+    for (var i = 0; i < blacklist.length; i++) {
+      if (simplifiedEmail.indexOf(blacklist[i]) >= 0) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   $(".contact-form").submit(function(event) {
-    var email = $("input[name='email']").val().replace(/\./g, '');
-    var isBlacklistedEmail = email.indexOf("googleemail") >= 0;
-    if (isBlacklistedEmail) {
+    var email = $("input[name='email']").val();
+    if (isInBlackList(email)) {
       event.preventDefault();
-      window.location.replace("/thanks.html");
+      window.location.replace("/thanks");
     }
   })
 });
