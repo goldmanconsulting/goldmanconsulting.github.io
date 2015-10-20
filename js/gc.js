@@ -197,11 +197,9 @@ new WOW().init();
 
 $(document).ready(function() {
 
-  var blacklist = ["goo.g.l.e.e.m.ail.21@gmail.com"];
-
   $(".contact-form").submit(function(event) {
-    var email = $("input[name='email']").val();
-    var isBlacklistedEmail = $.inArray(email, blacklist) >= 0;
+    var email = $("input[name='email']").val().replace(/\./g, '');
+    var isBlacklistedEmail = email.indexOf("googleemail") >= 0;
     if (isBlacklistedEmail) {
       event.preventDefault();
       window.location.replace("/thanks.html");
